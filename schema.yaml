@@ -156,7 +156,8 @@ definitions:
 
   RangeIter:
     description: |
-      `RangeIter` block constructs a new collection by iterating over the given collection which is a string, an array, or an object.
+      `RangeIter` block constructs a new collection by iterating over the given collection.
+      A collection is a JSON value that is one of a string, an array, or an object.
       For a string, the iteration is over its characters and constructs a JSON array.
       For an array, the iteration is over its elements and constructs a JSON array.
       For an object, the iteration is over its key-value pairs and constructs a JSON object.
@@ -188,8 +189,8 @@ definitions:
         maxItems: 2
       in:
         description: |
-          `in` property takes the collection to be iterated over.
-          The type of this collection must be one of string, array, or object.
+          `in` property takes a collection.
+          If the given value is evaluated as not a collection, the evaluation fails.
         "$ref": "#/definitions/Expr"
       do:
         description: |
@@ -198,8 +199,8 @@ definitions:
       if:
         description: |
           `if` property determines whether to evaluate the `do` property.
-          This expression must be evaluated to a boolean value.
-          `do` property is evaluated only if this property is absent or it is true for an element.
+          If the given value is evaluated as not a boolean, the evaluation fails.
+          `do` property is evaluated if this property is absent or it is true for the corresponding element.
           Otherwise, the `do` property is skipped. 
         "$ref": "#/definitions/Expr"
     required: [ for, in, do ]
@@ -207,7 +208,7 @@ definitions:
 
   GetElem:
     description: |
-      `GetElem` block extracts an element at the specified position from a collection which is a string, an array, or an object.
+      `GetElem` block extracts an element at the specified position from a collection.
     examples:
       - get: 4
         from: "Hello, World!"
@@ -220,13 +221,15 @@ definitions:
       get:
         description: |
           `get` property takes a position at a collection.
-          For a string, the position must be an integer number index of a character.
-          For an array, the position must be an integer number index of an element.
-          For an object, the position must be a string key of a value.
+          For a string, if the position is not an integer number index, the evaluation fails.
+          For an array, if the position is not an integer number index, the evaluation fails.
+          For an object, if the position is not a string key, the evaluation fails.
+          If the position is not found in the collection, the evaluation fails.
         "$ref": "#/definitions/Expr"
       from:
         description: |
-          `from` property takes a collection to extract an element from, which must be a string, an array, or an object.
+          `from` property takes a collection.
+          If the given value is evaluated as not a collection, the evaluation fails.
         "$ref": "#/definitions/Expr"
     required: [ get, from ]
     additionalProperties: false
@@ -244,12 +247,14 @@ definitions:
     properties:
       ref:
         description: |
-          `ref` property takes the name of the function to call.
+          `ref` property takes a name of the function to be called.
+          If the name is not found in the existing references, the evaluation fails.
         type: string
       with:
         description: |
           `with` property takes a JSON object which maps argument names to argument values.
           This property may be absent if the function defines no arguments.
+          If arguments does not match the function definition, the evaluation fails.
         type: object
         additionalProperties:
           "$ref": "#/definitions/Expr"
@@ -271,7 +276,7 @@ definitions:
       cases:
         description: |
           `cases` property is a list of conditional cases.
-          Conditions are evaluated from the top, and the first case that has `when` property which evaluates `true` or 'otherwise' property is selected.
+          Conditions are evaluated from the top, and the first case that has `when` property which evaluates `true` or has 'otherwise' property is selected.
           If no case is selected, the evaluation fails.
         type: array
         items:
@@ -289,7 +294,7 @@ definitions:
           when:
             description: |
               `when` property is a condition to evaluate.
-              This expression must be evaluated to a boolean value.
+              If this expression evaluates to not a boolean value, the evaluation fails.
             "$ref": "#/definitions/Expr"
           then:
             description: |
@@ -320,7 +325,10 @@ definitions:
       len:
         description: |
           `len` operation returns the length of the operand.
-          The operand must be evaluated as a string, an array, or an object.
+          For a string, it returns the number of characters.
+          For an array, it returns the number of elements.
+          For an object, it returns the number of key-value pairs.
+          If the operand has no length, the evaluation fails.
         examples:
           - len: "Hello, World!"
           - len: [ 1, 2, 3 ]
@@ -329,7 +337,7 @@ definitions:
       not:
         description: |
           `not` operation returns the negation of the operand.
-          The operand must be evaluated as a boolean value.
+          If the operand evaluates to not a boolean value, the evaluation fails.
         examples:
           - not: true
           - not: false
@@ -337,14 +345,15 @@ definitions:
       flat:
         description: |
           `flat` operation returns the flattened JSON array of the operand.
-          The operand must be evaluated as an array of arrays.
+          If the operand is not evaluated as an array of arrays, the evaluation fails.
         examples:
           - flat: [ [ 1, 2 ], [ 3, 4 ] ]
         "$ref": "#/definitions/Expr"
       floor:
         description: |
           `floor` operation returns the maximum integer value that is less than or equal to the operand.
-          The operand must be evaluated as a number.
+          If the operand is not evaluated as a number, the evaluation fails.
+          If the result is to be not a finite number, the evaluation fails.
         examples:
           - floor: 3.14
           - floor: 3.0
@@ -352,15 +361,16 @@ definitions:
       ceil:
         description: |
           `ceil` operation returns the minimum integer value that is greater than or equal to the operand.
-          The operand must be evaluated as a number.
+          If the operand is not evaluated as a number, the evaluation fails.
+          If the result is to be not a finite number, the evaluation fails.
         examples:
           - ceil: 3.14
           - ceil: 3.0
         "$ref": "#/definitions/Expr"
       abort:
         description: |
-          `abort` operation fails the evaluation.
-          The operand must be evaluated as a string.
+          `abort` operation always fails the evaluation.
+          If the operand evaluates to not a string, the evaluation fails.
         examples:
           - abort: "invalid state"
         "$ref": "#/definitions/Expr"
@@ -376,14 +386,16 @@ definitions:
       sub:
         description: |
           `sub` operation returns the subtraction of the two operands.
-          The operands must be evaluated as numbers.
+          If the operands are not evaluated as numbers, the evaluation fails.
+          If the result is to be not a finite number, the evaluation fails.
         examples:
           - sub: [ 3, 2 ]
         "$ref": "#/definitions/OpBinary/definitions/OpBinaryOperand"
       div:
         description: |
           `div` operation returns the division of the two operands.
-          The operands must be evaluated as numbers.
+          If the operands are not evaluated as numbers, the evaluation fails.
+          If the result is to be not a finite number, the evaluation fails.
         examples:
           - div: [ 3, 2 ]
         "$ref": "#/definitions/OpBinary/definitions/OpBinaryOperand"
@@ -458,8 +470,9 @@ definitions:
       add:
         description: |
           `add` operation returns the sum of the operands.
-          The operands must be evaluated as numbers.
           If operands are empty, the result is 0.
+          If the operands are not evaluated as numbers, the evaluation fails.
+          If the result is to be not a finite number, the evaluation fails.
         examples:
           - add: [ 1, 2, 3 ]
           - add: [ ]
@@ -469,8 +482,9 @@ definitions:
       mul:
         description: |
           `mul` operation returns the product of the operands.
-          The operands must be evaluated as numbers.
           If operands are empty, the result is 1.
+          If the operands are not evaluated as numbers, the evaluation fails.
+          If the result is to be not a finite number, the evaluation fails.
         examples:
           - mul: [ 1, 2, 3 ]
           - mul: [ ]
@@ -480,8 +494,8 @@ definitions:
       and:
         description: |
           `and` operation returns the logical AND of the operands.
-          The operands must be evaluated as boolean values.
           If operands are empty, the result is true.
+          If the operands are not evaluated as booleans, the evaluation fails.
         examples:
           - and: [ ]
           - and: [ true ]
@@ -494,8 +508,8 @@ definitions:
       or:
         description: |
           `or` operation returns the logical OR of the operands.
-          The operands must be evaluated as boolean values.
           If operands are empty, the result is false.
+          If the operands are not evaluated as booleans, the evaluation fails.
         examples:
           - or: [ ]
           - or: [ true ]
@@ -508,8 +522,8 @@ definitions:
       cat:
         description: |
           `cat` operation returns the concatenation of the operands.
-          The operands must be evaluated as strings.
           If operands are empty, the result is an empty string.
+          If the operands are not evaluated as strings, the evaluation fails.
         examples:
           - cat: [ ]
           - cat: [ "Hello, ", "World", "!" ]
@@ -519,7 +533,7 @@ definitions:
       min:
         description: |
           `min` operation returns the minimum value of the one or more operands.
-          The operands must be evaluated as numbers.
+          If operands are not evaluated as numbers, the evaluation fails.
         examples:
           - min: [ 3, 1, 4, 2 ]
           - min: [ 100 ]
@@ -530,7 +544,7 @@ definitions:
       max:
         description: |
           `max` operation returns the maximum value of the one or more operands.
-          The operands must be evaluated as numbers.
+          If operands are not evaluated as numbers, the evaluation fails.
         examples:
           - max: [ 3, 1, 4, 2 ]
           - max: [ 100 ]
@@ -541,8 +555,8 @@ definitions:
       merge:
         description: |
           `merge` operation returns the merged JSON object of the operands.
-          The operands must be evaluated as objects.
           If operands are empty, the result is an empty object.
+          If the operands are not evaluated as JSON objects, the evaluation fails.
         examples:
           - merge: [ ]
           - merge: [ { a: 1, b: 1 }, { b: 2 }, { c: 3 } ]

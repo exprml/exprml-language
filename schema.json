@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/exprml/exprml-language/raw/refs/heads/main/schema.json",
   "title": "ExprML Schema",
   "description": "ExprML is a YAML-based expression evaluator framework.\nThis schema defines the structure of the ExprML language.\n",
   "$ref": "#/definitions/Expr",
@@ -249,7 +248,7 @@
       }
     },
     "RangeIter": {
-      "description": "`RangeIter` block constructs a new collection by iterating over the given collection which is a string, an array, or an object.\nFor a string, the iteration is over its characters and constructs a JSON array.\nFor an array, the iteration is over its elements and constructs a JSON array.\nFor an object, the iteration is over its key-value pairs and constructs a JSON object.\n",
+      "description": "`RangeIter` block constructs a new collection by iterating over the given collection.\nA collection is a JSON value that is one of a string, an array, or an object.\nFor a string, the iteration is over its characters and constructs a JSON array.\nFor an array, the iteration is over its elements and constructs a JSON array.\nFor an object, the iteration is over its key-value pairs and constructs a JSON object.\n",
       "examples": [
         {
           "for": [
@@ -338,7 +337,7 @@
           "maxItems": 2
         },
         "in": {
-          "description": "`in` property takes the collection to be iterated over.\nThe type of this collection must be one of string, array, or object.\n",
+          "description": "`in` property takes a collection.\nIf the given value is evaluated as not a collection, the evaluation fails.\n",
           "$ref": "#/definitions/Expr"
         },
         "do": {
@@ -346,7 +345,7 @@
           "$ref": "#/definitions/Expr"
         },
         "if": {
-          "description": "`if` property determines whether to evaluate the `do` property.\nThis expression must be evaluated to a boolean value.\n`do` property is evaluated only if this property is absent or it is true for an element.\nOtherwise, the `do` property is skipped. \n",
+          "description": "`if` property determines whether to evaluate the `do` property.\nIf the given value is evaluated as not a boolean, the evaluation fails.\n`do` property is evaluated if this property is absent or it is true for the corresponding element.\nOtherwise, the `do` property is skipped. \n",
           "$ref": "#/definitions/Expr"
         }
       },
@@ -358,7 +357,7 @@
       "additionalProperties": false
     },
     "GetElem": {
-      "description": "`GetElem` block extracts an element at the specified position from a collection which is a string, an array, or an object.\n",
+      "description": "`GetElem` block extracts an element at the specified position from a collection.\n",
       "examples": [
         {
           "get": 4,
@@ -384,11 +383,11 @@
       "type": "object",
       "properties": {
         "get": {
-          "description": "`get` property takes a position at a collection.\nFor a string, the position must be an integer number index of a character.\nFor an array, the position must be an integer number index of an element.\nFor an object, the position must be a string key of a value.\n",
+          "description": "`get` property takes a position at a collection.\nFor a string, if the position is not an integer number index, the evaluation fails.\nFor an array, if the position is not an integer number index, the evaluation fails.\nFor an object, if the position is not a string key, the evaluation fails.\nIf the position is not found in the collection, the evaluation fails.\n",
           "$ref": "#/definitions/Expr"
         },
         "from": {
-          "description": "`from` property takes a collection to extract an element from, which must be a string, an array, or an object.\n",
+          "description": "`from` property takes a collection.\nIf the given value is evaluated as not a collection, the evaluation fails.\n",
           "$ref": "#/definitions/Expr"
         }
       },
@@ -416,11 +415,11 @@
       "type": "object",
       "properties": {
         "ref": {
-          "description": "`ref` property takes the name of the function to call.\n",
+          "description": "`ref` property takes a name of the function to be called.\nIf the name is not found in the existing references, the evaluation fails.\n",
           "type": "string"
         },
         "with": {
-          "description": "`with` property takes a JSON object which maps argument names to argument values.\nThis property may be absent if the function defines no arguments.\n",
+          "description": "`with` property takes a JSON object which maps argument names to argument values.\nThis property may be absent if the function defines no arguments.\nIf arguments does not match the function definition, the evaluation fails.\n",
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/Expr"
@@ -468,7 +467,7 @@
       "type": "object",
       "properties": {
         "cases": {
-          "description": "`cases` property is a list of conditional cases.\nConditions are evaluated from the top, and the first case that has `when` property which evaluates `true` or 'otherwise' property is selected.\nIf no case is selected, the evaluation fails.\n",
+          "description": "`cases` property is a list of conditional cases.\nConditions are evaluated from the top, and the first case that has `when` property which evaluates `true` or has 'otherwise' property is selected.\nIf no case is selected, the evaluation fails.\n",
           "type": "array",
           "items": {
             "oneOf": [
@@ -492,7 +491,7 @@
           "type": "object",
           "properties": {
             "when": {
-              "description": "`when` property is a condition to evaluate.\nThis expression must be evaluated to a boolean value.\n",
+              "description": "`when` property is a condition to evaluate.\nIf this expression evaluates to not a boolean value, the evaluation fails.\n",
               "$ref": "#/definitions/Expr"
             },
             "then": {
@@ -530,7 +529,7 @@
       "additionalProperties": false,
       "properties": {
         "len": {
-          "description": "`len` operation returns the length of the operand.\nThe operand must be evaluated as a string, an array, or an object.\n",
+          "description": "`len` operation returns the length of the operand.\nFor a string, it returns the number of characters.\nFor an array, it returns the number of elements.\nFor an object, it returns the number of key-value pairs.\nIf the operand has no length, the evaluation fails.\n",
           "examples": [
             {
               "len": "Hello, World!"
@@ -553,7 +552,7 @@
           "$ref": "#/definitions/Expr"
         },
         "not": {
-          "description": "`not` operation returns the negation of the operand.\nThe operand must be evaluated as a boolean value.\n",
+          "description": "`not` operation returns the negation of the operand.\nIf the operand evaluates to not a boolean value, the evaluation fails.\n",
           "examples": [
             {
               "not": true
@@ -565,7 +564,7 @@
           "$ref": "#/definitions/Expr"
         },
         "flat": {
-          "description": "`flat` operation returns the flattened JSON array of the operand.\nThe operand must be evaluated as an array of arrays.\n",
+          "description": "`flat` operation returns the flattened JSON array of the operand.\nIf the operand is not evaluated as an array of arrays, the evaluation fails.\n",
           "examples": [
             {
               "flat": [
@@ -583,7 +582,7 @@
           "$ref": "#/definitions/Expr"
         },
         "floor": {
-          "description": "`floor` operation returns the maximum integer value that is less than or equal to the operand.\nThe operand must be evaluated as a number.\n",
+          "description": "`floor` operation returns the maximum integer value that is less than or equal to the operand.\nIf the operand is not evaluated as a number, the evaluation fails.\nIf the result is to be not a finite number, the evaluation fails.\n",
           "examples": [
             {
               "floor": 3.14
@@ -595,7 +594,7 @@
           "$ref": "#/definitions/Expr"
         },
         "ceil": {
-          "description": "`ceil` operation returns the minimum integer value that is greater than or equal to the operand.\nThe operand must be evaluated as a number.\n",
+          "description": "`ceil` operation returns the minimum integer value that is greater than or equal to the operand.\nIf the operand is not evaluated as a number, the evaluation fails.\nIf the result is to be not a finite number, the evaluation fails.\n",
           "examples": [
             {
               "ceil": 3.14
@@ -607,7 +606,7 @@
           "$ref": "#/definitions/Expr"
         },
         "abort": {
-          "description": "`abort` operation fails the evaluation.\nThe operand must be evaluated as a string.\n",
+          "description": "`abort` operation always fails the evaluation.\nIf the operand evaluates to not a string, the evaluation fails.\n",
           "examples": [
             {
               "abort": "invalid state"
@@ -625,7 +624,7 @@
       "additionalProperties": false,
       "properties": {
         "sub": {
-          "description": "`sub` operation returns the subtraction of the two operands.\nThe operands must be evaluated as numbers.\n",
+          "description": "`sub` operation returns the subtraction of the two operands.\nIf the operands are not evaluated as numbers, the evaluation fails.\nIf the result is to be not a finite number, the evaluation fails.\n",
           "examples": [
             {
               "sub": [
@@ -637,7 +636,7 @@
           "$ref": "#/definitions/OpBinary/definitions/OpBinaryOperand"
         },
         "div": {
-          "description": "`div` operation returns the division of the two operands.\nThe operands must be evaluated as numbers.\n",
+          "description": "`div` operation returns the division of the two operands.\nIf the operands are not evaluated as numbers, the evaluation fails.\nIf the result is to be not a finite number, the evaluation fails.\n",
           "examples": [
             {
               "div": [
@@ -828,7 +827,7 @@
       "additionalProperties": false,
       "properties": {
         "add": {
-          "description": "`add` operation returns the sum of the operands.\nThe operands must be evaluated as numbers.\nIf operands are empty, the result is 0.\n",
+          "description": "`add` operation returns the sum of the operands.\nIf operands are empty, the result is 0.\nIf the operands are not evaluated as numbers, the evaluation fails.\nIf the result is to be not a finite number, the evaluation fails.\n",
           "examples": [
             {
               "add": [
@@ -847,7 +846,7 @@
           }
         },
         "mul": {
-          "description": "`mul` operation returns the product of the operands.\nThe operands must be evaluated as numbers.\nIf operands are empty, the result is 1.\n",
+          "description": "`mul` operation returns the product of the operands.\nIf operands are empty, the result is 1.\nIf the operands are not evaluated as numbers, the evaluation fails.\nIf the result is to be not a finite number, the evaluation fails.\n",
           "examples": [
             {
               "mul": [
@@ -866,7 +865,7 @@
           }
         },
         "and": {
-          "description": "`and` operation returns the logical AND of the operands.\nThe operands must be evaluated as boolean values.\nIf operands are empty, the result is true.\n",
+          "description": "`and` operation returns the logical AND of the operands.\nIf operands are empty, the result is true.\nIf the operands are not evaluated as booleans, the evaluation fails.\n",
           "examples": [
             {
               "and": []
@@ -901,7 +900,7 @@
           }
         },
         "or": {
-          "description": "`or` operation returns the logical OR of the operands.\nThe operands must be evaluated as boolean values.\nIf operands are empty, the result is false.\n",
+          "description": "`or` operation returns the logical OR of the operands.\nIf operands are empty, the result is false.\nIf the operands are not evaluated as booleans, the evaluation fails.\n",
           "examples": [
             {
               "or": []
@@ -936,7 +935,7 @@
           }
         },
         "cat": {
-          "description": "`cat` operation returns the concatenation of the operands.\nThe operands must be evaluated as strings.\nIf operands are empty, the result is an empty string.\n",
+          "description": "`cat` operation returns the concatenation of the operands.\nIf operands are empty, the result is an empty string.\nIf the operands are not evaluated as strings, the evaluation fails.\n",
           "examples": [
             {
               "cat": []
@@ -955,7 +954,7 @@
           }
         },
         "min": {
-          "description": "`min` operation returns the minimum value of the one or more operands.\nThe operands must be evaluated as numbers.\n",
+          "description": "`min` operation returns the minimum value of the one or more operands.\nIf operands are not evaluated as numbers, the evaluation fails.\n",
           "examples": [
             {
               "min": [
@@ -978,7 +977,7 @@
           "minItems": 1
         },
         "max": {
-          "description": "`max` operation returns the maximum value of the one or more operands.\nThe operands must be evaluated as numbers.\n",
+          "description": "`max` operation returns the maximum value of the one or more operands.\nIf operands are not evaluated as numbers, the evaluation fails.\n",
           "examples": [
             {
               "max": [
@@ -1001,7 +1000,7 @@
           "minItems": 1
         },
         "merge": {
-          "description": "`merge` operation returns the merged JSON object of the operands.\nThe operands must be evaluated as objects.\nIf operands are empty, the result is an empty object.\n",
+          "description": "`merge` operation returns the merged JSON object of the operands.\nIf operands are empty, the result is an empty object.\nIf the operands are not evaluated as JSON objects, the evaluation fails.\n",
           "examples": [
             {
               "merge": []
