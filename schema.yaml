@@ -416,8 +416,7 @@ definitions:
       lt:
         description: |
           `lt` operation returns the less-than comparison of the two operands.
-          The operands must be evaluated as comparable JSON values.
-          The comparable JSON value is a number, a boolean, a string, or an array of comparable values.
+          If the operands are not evaluated as comparable JSON values, the evaluation fails, where comparable JSON values are numbers, booleans, strings, or arrays of comparable values.
           If the operands have different types, the evaluation fails.
         examples:
           - lt: [ 5, 5 ]

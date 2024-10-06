@@ -684,7 +684,7 @@
           "$ref": "#/definitions/OpBinary/definitions/OpBinaryOperand"
         },
         "lt": {
-          "description": "`lt` operation returns the less-than comparison of the two operands.\nThe operands must be evaluated as comparable JSON values.\nThe comparable JSON value is a number, a boolean, a string, or an array of comparable values.\nIf the operands have different types, the evaluation fails.\n",
+          "description": "`lt` operation returns the less-than comparison of the two operands.\nIf the operands are not evaluated as comparable JSON values, the evaluation fails, where comparable JSON values are numbers, booleans, strings, or arrays of comparable values.\nIf the operands have different types, the evaluation fails.\n",
           "examples": [
             {
               "lt": [
