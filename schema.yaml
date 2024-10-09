@@ -48,36 +48,36 @@ definitions:
           `where` property is a list of function definitions that can be referenced by the `eval` property.
         type: array
         items:
-          "$ref": "#/definitions/FunDef"
+          "$ref": "#/definitions/Eval/definitions/FunDef"
       eval:
         description: |
           `eval` property is a expression to evaluate, which can reference the functions in the `where` property.
         "$ref": "#/definitions/Expr"
     required: [ eval ]
     additionalProperties: false
-
-  FunDef:
-    description: |
-      `FunDef` block is a function definition.
-      `with` property may be absent to define a constant function, which can be regarded as a so-called variable definition.
-    type: object
-    properties:
-      def:
+    definitions:
+      FunDef:
         description: |
-          `def` property defines the name of the function.
-        type: string
-      value:
-        description: |
-          `value` property defines the body of the function.
-        "$ref": "#/definitions/Expr"
-      with:
-        description: |
-          `with` property defines the list of parameter names, which may be absent.
-        type: array
-        items:
-          type: string
-    required: [ def, value ]
-    additionalProperties: false
+          `FunDef` block is a function definition.
+          `with` property may be absent to define a constant function, which can be regarded as a so-called variable definition.
+        type: object
+        properties:
+          def:
+            description: |
+              `def` property defines the name of the function.
+            type: string
+          value:
+            description: |
+              `value` property defines the body of the function.
+            "$ref": "#/definitions/Expr"
+          with:
+            description: |
+              `with` property defines the list of parameter names, which may be absent.
+            type: array
+            items:
+              type: string
+        required: [ def, value ]
+        additionalProperties: false
 
   Scalar:
     description: |
@@ -353,7 +353,6 @@ definitions:
         description: |
           `floor` operation returns the maximum integer value that is less than or equal to the operand.
           If the operand is not evaluated as a number, the evaluation fails.
-          If the result is to be not a finite number, the evaluation fails.
         examples:
           - floor: 3.14
           - floor: 3.0
@@ -362,7 +361,6 @@ definitions:
         description: |
           `ceil` operation returns the minimum integer value that is greater than or equal to the operand.
           If the operand is not evaluated as a number, the evaluation fails.
-          If the result is to be not a finite number, the evaluation fails.
         examples:
           - ceil: 3.14
           - ceil: 3.0

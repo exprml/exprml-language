@@ -86,7 +86,7 @@
           "description": "`where` property is a list of function definitions that can be referenced by the `eval` property.\n",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/FunDef"
+            "$ref": "#/definitions/Eval/definitions/FunDef"
           }
         },
         "eval": {
@@ -97,33 +97,35 @@
       "required": [
         "eval"
       ],
-      "additionalProperties": false
-    },
-    "FunDef": {
-      "description": "`FunDef` block is a function definition.\n`with` property may be absent to define a constant function, which can be regarded as a so-called variable definition.\n",
-      "type": "object",
-      "properties": {
-        "def": {
-          "description": "`def` property defines the name of the function.\n",
-          "type": "string"
-        },
-        "value": {
-          "description": "`value` property defines the body of the function.\n",
-          "$ref": "#/definitions/Expr"
-        },
-        "with": {
-          "description": "`with` property defines the list of parameter names, which may be absent.\n",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+      "additionalProperties": false,
+      "definitions": {
+        "FunDef": {
+          "description": "`FunDef` block is a function definition.\n`with` property may be absent to define a constant function, which can be regarded as a so-called variable definition.\n",
+          "type": "object",
+          "properties": {
+            "def": {
+              "description": "`def` property defines the name of the function.\n",
+              "type": "string"
+            },
+            "value": {
+              "description": "`value` property defines the body of the function.\n",
+              "$ref": "#/definitions/Expr"
+            },
+            "with": {
+              "description": "`with` property defines the list of parameter names, which may be absent.\n",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "def",
+            "value"
+          ],
+          "additionalProperties": false
         }
-      },
-      "required": [
-        "def",
-        "value"
-      ],
-      "additionalProperties": false
+      }
     },
     "Scalar": {
       "description": "`Scalar` literal represents a scalar value which is a number, a boolean, or a string.\n",
@@ -582,7 +584,7 @@
           "$ref": "#/definitions/Expr"
         },
         "floor": {
-          "description": "`floor` operation returns the maximum integer value that is less than or equal to the operand.\nIf the operand is not evaluated as a number, the evaluation fails.\nIf the result is to be not a finite number, the evaluation fails.\n",
+          "description": "`floor` operation returns the maximum integer value that is less than or equal to the operand.\nIf the operand is not evaluated as a number, the evaluation fails.\n",
           "examples": [
             {
               "floor": 3.14
@@ -594,7 +596,7 @@
           "$ref": "#/definitions/Expr"
         },
         "ceil": {
-          "description": "`ceil` operation returns the minimum integer value that is greater than or equal to the operand.\nIf the operand is not evaluated as a number, the evaluation fails.\nIf the result is to be not a finite number, the evaluation fails.\n",
+          "description": "`ceil` operation returns the minimum integer value that is greater than or equal to the operand.\nIf the operand is not evaluated as a number, the evaluation fails.\n",
           "examples": [
             {
               "ceil": 3.14
