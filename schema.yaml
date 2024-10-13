@@ -45,11 +45,7 @@ definitions:
           maxProperties: 1
           minProperties: 1
           patternProperties:
-            "^\\$[a-zA-Z][_a-zA-Z0-9]*$":
-              "$ref": "#/definitions/Expr"
-            "^\\$[a-zA-Z][_a-zA-Z0-9]*\\(\\s*\\)$":
-              "$ref": "#/definitions/Expr"
-            "^\\$[a-zA-Z][_a-zA-Z0-9]*\\(\\s*\\$[a-zA-Z][_a-zA-Z0-9]*(\\s*,\\s*\\$[a-zA-Z][_a-zA-Z0-9]*)*\\s*\\)$":
+            "^\\$[_a-zA-Z][_a-zA-Z0-9]*(\\(\\s*\\)|\\(\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*(\\s*,\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*)*(\\s*,)?\\s*\\))?$":
               "$ref": "#/definitions/Expr"
           additionalProperties: false
       eval:
@@ -74,7 +70,7 @@ definitions:
       `Ref` literal represents a reference for a variable.
       The identifier must be a string that begins with '$'.
     type: string
-    pattern: "^\\$[a-zA-Z][_a-zA-Z0-9]*$"
+    pattern: "^\\$[_a-zA-Z][_a-zA-Z0-9]*$"
 
   Obj:
     description: |
@@ -155,7 +151,7 @@ definitions:
     oneOf:
       - type: object
         patternProperties:
-          "^for\\(\\s*\\$[a-zA-Z][_a-zA-Z0-9]*\\s*,\\s*\\$[a-zA-Z][_a-zA-Z0-9]*\\s*\\)$":
+          "^for\\(\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*\\s*,\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*\\s*\\)$":
             "$ref": "#/definitions/Expr"
         properties:
           do:
@@ -166,7 +162,7 @@ definitions:
         additionalProperties: false
       - type: object
         patternProperties:
-          "^for\\(\\s*\\$[a-zA-Z][_a-zA-Z0-9]*\\s*,\\s*\\$[a-zA-Z][_a-zA-Z0-9]*\\s*\\)$":
+          "^for\\(\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*\\s*,\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*\\s*\\)$":
             "$ref": "#/definitions/Expr"
         properties:
           do:
@@ -207,8 +203,12 @@ definitions:
       If the given arguments do not cover the defined arguments, the evaluation fails.
     type: object
     patternProperties:
-      "^\\$[a-zA-Z][_a-zA-Z0-9]*$":
-          "$ref": "#/definitions/Expr"
+      "^\\$[_a-zA-Z][_a-zA-Z0-9]*$":
+        type: object
+        patternProperties:
+          "^\\$[_a-zA-Z][_a-zA-Z0-9]*$":
+            "$ref": "#/definitions/Expr"
+        additionalProperties: false
     minProperties: 1
     maxProperties: 1
     additionalProperties: false

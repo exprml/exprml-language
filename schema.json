@@ -60,13 +60,7 @@
             "maxProperties": 1,
             "minProperties": 1,
             "patternProperties": {
-              "^\\$[a-zA-Z][_a-zA-Z0-9]*$": {
-                "$ref": "#/definitions/Expr"
-              },
-              "^\\$[a-zA-Z][_a-zA-Z0-9]*\\(\\s*\\)$": {
-                "$ref": "#/definitions/Expr"
-              },
-              "^\\$[a-zA-Z][_a-zA-Z0-9]*\\(\\s*\\$[a-zA-Z][_a-zA-Z0-9]*(\\s*,\\s*\\$[a-zA-Z][_a-zA-Z0-9]*)*\\s*\\)$": {
+              "^\\$[_a-zA-Z][_a-zA-Z0-9]*(\\(\\s*\\)|\\(\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*(\\s*,\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*)*(\\s*,)?\\s*\\))?$": {
                 "$ref": "#/definitions/Expr"
               }
             },
@@ -101,7 +95,7 @@
     "Ref": {
       "description": "`Ref` literal represents a reference for a variable.\nThe identifier must be a string that begins with '$'.\n",
       "type": "string",
-      "pattern": "^\\$[a-zA-Z][_a-zA-Z0-9]*$"
+      "pattern": "^\\$[_a-zA-Z][_a-zA-Z0-9]*$"
     },
     "Obj": {
       "description": "`Obj` block constructs a JSON object.\n",
@@ -185,7 +179,7 @@
         {
           "type": "object",
           "patternProperties": {
-            "^for\\(\\s*\\$[a-zA-Z][_a-zA-Z0-9]*\\s*,\\s*\\$[a-zA-Z][_a-zA-Z0-9]*\\s*\\)$": {
+            "^for\\(\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*\\s*,\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*\\s*\\)$": {
               "$ref": "#/definitions/Expr"
             }
           },
@@ -204,7 +198,7 @@
         {
           "type": "object",
           "patternProperties": {
-            "^for\\(\\s*\\$[a-zA-Z][_a-zA-Z0-9]*\\s*,\\s*\\$[a-zA-Z][_a-zA-Z0-9]*\\s*\\)$": {
+            "^for\\(\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*\\s*,\\s*\\$[_a-zA-Z][_a-zA-Z0-9]*\\s*\\)$": {
               "$ref": "#/definitions/Expr"
             }
           },
@@ -249,8 +243,14 @@
       "description": "`Call` block invokes a function with the given arguments.\nIf the function is not found, the evaluation fails.\nIf the given arguments do not cover the defined arguments, the evaluation fails.\n",
       "type": "object",
       "patternProperties": {
-        "^\\$[a-zA-Z][_a-zA-Z0-9]*$": {
-          "$ref": "#/definitions/Expr"
+        "^\\$[_a-zA-Z][_a-zA-Z0-9]*$": {
+          "type": "object",
+          "patternProperties": {
+            "^\\$[_a-zA-Z][_a-zA-Z0-9]*$": {
+              "$ref": "#/definitions/Expr"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "minProperties": 1,
