@@ -208,8 +208,6 @@ definitions:
     type: object
     patternProperties:
       "^\\$[a-zA-Z][_a-zA-Z0-9]*$":
-        type: object
-        additionalProperties:
           "$ref": "#/definitions/Expr"
     minProperties: 1
     maxProperties: 1
