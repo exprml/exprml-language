@@ -1,15 +1,33 @@
-# exprml-language
+# ExprML Language
 
-This repository provides the definition the `exprml` language.
+This repository provides the definition the ExprML Language.
 
-`exprml` is a YAML-based expression evaluator framework consisting of:
-    
-- The `exprml` language: the programming language to represent and evaluate expressions written in the YAML format, which is defined as a JSON Schema file.
-- The `exprml` API: the API specification to process the code written in the `exprml` language, which is defined as Protocol Buffers Schema files.
-- The `exprml` libraries: a collection of exemplar implementations for the `exprml` API, which are currently available in Go and Dart.
-- The `exprml` testcases: comprehensive testcases to check libraries implementing the `exprml` API. 
+The ExprML Language is a programming language to represent and evaluate expressions written in the YAML format.
 
+The specification of the language is defined as a JSON Schema, which is provided as:
 
+- YAML: https://github.com/exprml/exprml-language/blob/main/schema.yaml
+- JSON: https://github.com/exprml/exprml-language/blob/main/schema.json
+
+## Concept
+
+The ExprML Language realizes the following concepts:
+
+- YAML-based: ExprML can represent expressions in YAML, which can be evaluated as JSON values.
+- Embeddable: Libraries implementing ExprML interpleters are available in multiple programming languages.
+
+## Interpreters
+
+### Libraries
+
+- Go: https://github.com/exprml/exprml-go
+- PHP: https://github.com/exprml/exprml-php
+
+### Console application
+
+https://github.com/exprml/exprml-cli
+
+<!--
 ## Related Work
 
 - https://murano.readthedocs.io/en/stable-liberty/appdev-guide/murano_pl.html
@@ -20,3 +38,4 @@ This repository provides the definition the `exprml` language.
   - yaml-exp is a variation of the Racket Language in the YAML format.
 - https://github.com/google/cel-spec
   - Common Expression Language (CEL) is a language to represent and evaluate expressions.
+-->
