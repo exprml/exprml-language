@@ -17,6 +17,8 @@ The ExprML Language realizes the following concepts:
 - Embeddable: 
   - Libraries implementing ExprML interpleters are available in multiple programming languages.
   - JSON Schema of ExpreML can be referenced from exsisting plugins and other JSON Schemas.
+- Multi-language support
+  - Interpreters are available in various programming language.
 
 ## Interpreters
 
