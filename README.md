@@ -24,6 +24,7 @@ The ExprML Language realizes the following concepts:
 
 - Go: https://github.com/exprml/exprml-go
 - PHP: https://github.com/exprml/exprml-php
+- Dart: https://github.com/exprml/exprml-dart
 
 ### Console application
 
