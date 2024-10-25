@@ -28,6 +28,7 @@ The ExprML Language realizes the following concepts:
 - PHP: https://github.com/exprml/exprml-php
 - Dart: https://github.com/exprml/exprml-dart
 - TypeScript/JavaScript: https://github.com/exprml/exprml-ts
+- JVM languages including Kotlin and Java: https://github.com/exprml/exprml-jvm
 
 ### Console application
 
