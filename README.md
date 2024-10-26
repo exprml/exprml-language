@@ -1,24 +1,25 @@
 # ExprML Language
 
-The ExprML Language is a programming language to represent and evaluate expressions written in the YAML format.
+ExprML is a programming language for representing and evaluating expressions in JSON format.
 
-The specification of the language is defined as a JSON Schema, which is provided as:
+The language specification is defined by a JSON Schema, available here:
 
-- YAML: https://github.com/exprml/exprml-language/blob/main/schema.yaml
 - JSON: https://github.com/exprml/exprml-language/blob/main/schema.json
+- YAML: https://github.com/exprml/exprml-language/blob/main/schema.yaml
 
 ## Concept
 
-The ExprML Language realizes the following concepts:
+ExprML realizes the following concepts to make it suitable as an expression language used in configuration files:
 
-- YAML-based:
-  - ExprML can represent expressions in YAML.
+- JSON-based:
+  - ExprML can represent expressions in JSON (and JSON-compatible YAML).
   - ExprML expressions can be evaluated as JSON values.
+  - ExprML expressions can be checked and auto-completed statically using the JSON Schema.
 - Embeddable: 
-  - Libraries implementing ExprML interpleters are available in multiple programming languages.
-  - JSON Schema of ExpreML can be referenced from exsisting plugins and other JSON Schemas.
+  - Interpleters implementing ExprML are available as libraries.
+  - JSON Schema of ExpreML can be referenced from exsisting tools and other JSON Schemas.
 - Multi-language support
-  - Interpreters are available in various programming language.
+  - Libraries implementing the interpreters are provided in various programming languages.
 
 ## Interpreters
 
@@ -27,7 +28,7 @@ The ExprML Language realizes the following concepts:
 - Go: https://github.com/exprml/exprml-go
 - PHP: https://github.com/exprml/exprml-php
 - Dart: https://github.com/exprml/exprml-dart
-- TypeScript/JavaScript: https://github.com/exprml/exprml-ts
+- TypeScript and JavaScript: https://github.com/exprml/exprml-ts
 - JVM languages including Kotlin and Java: https://github.com/exprml/exprml-jvm
 
 ### Console application
