@@ -27,7 +27,7 @@ ExprML realizes the following concepts to make it suitable as an expression lang
 
 - Go: https://github.com/exprml/exprml-go
 - PHP: https://github.com/exprml/exprml-php
-- Dart: https://github.com/exprml/exprml-dart
+- Dart: https://github.com/exprml/exprml_dart
 - TypeScript and JavaScript: https://github.com/exprml/exprml-ts
 - JVM languages including Kotlin and Java: https://github.com/exprml/exprml-jvm
 
