@@ -1,0 +1,25 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "**/example.json",
+      ],
+      "url": "./schema.json"
+    },
+    {
+      "fileMatch": [
+        "schema.json"
+      ],
+      "url": "http://json-schema.org/draft-07/schema#"
+    }
+  ],
+  "yaml.schemas": {
+    "./schema.json": [
+      "**/example.yaml"
+    ],
+    "http://json-schema.org/draft-07/schema#": [
+      "schema.json",
+      "file:///Users/jumpaku/Documents/exprml-spec/schema.yaml"
+    ]
+  }
+}

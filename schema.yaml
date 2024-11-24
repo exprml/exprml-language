@@ -1,7 +1,7 @@
 "$schema": "http://json-schema.org/draft-07/schema#"
 title: ExprML Schema
 description: |
-  ExprML is a YAML-based expression evaluator framework.
+  ExprML is a programming language for representing and evaluating expressions in JSON (and JSON-compatible YAML) format.
   This schema defines the structure of the ExprML language.
 
 "$ref": "#/definitions/Expr"
@@ -11,7 +11,7 @@ definitions:
   Expr:
     description: |
       An expression is a JSON value that represents a computation.
-    anyOf:
+    oneOf:
       - "$ref": "#/definitions/Eval"
       - "$ref": "#/definitions/Scalar"
       - "$ref": "#/definitions/Ref"
@@ -63,7 +63,7 @@ definitions:
       - type: number
       - type: boolean
       - type: string
-        pattern: "^`.*`$"
+        pattern: "^`[\\s\\S]*`$"
 
   Ref:
     description: |
