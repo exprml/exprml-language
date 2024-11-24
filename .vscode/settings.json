@@ -18,8 +18,7 @@
       "**/example.yaml"
     ],
     "http://json-schema.org/draft-07/schema#": [
-      "schema.json",
-      "file:///Users/jumpaku/Documents/exprml-spec/schema.yaml"
+      "schema.yaml",
     ]
   }
 }
